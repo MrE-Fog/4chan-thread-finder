@@ -18,47 +18,22 @@ var flongname = squery[4]
 var fname2 = strings.Split(flongname, ".")
 var fname = fname2[0]
 
-var bjson = "https://a.4cdn.org/" + board + "/threads.json"
-
 type Fourchan []struct {
 	Page    int `json:"page"`
 	Threads []struct {
-		No           int `json:"no"`
-		LastModified int `json:"last_modified"`
-		Replies      int `json:"replies"`
+		No int `json:"no"`
 	} `json:"threads"`
 }
 
 type Fourthread struct {
 	Posts []struct {
-		No            int    `json:"no"`
-		Now           string `json:"now"`
-		Name          string `json:"name"`
-		Sub           string `json:"sub,omitempty"`
-		Com           string `json:"com"`
-		Filename      string `json:"filename,omitempty"`
-		Ext           string `json:"ext,omitempty"`
-		W             int    `json:"w,omitempty"`
-		H             int    `json:"h,omitempty"`
-		TnW           int    `json:"tn_w,omitempty"`
-		TnH           int    `json:"tn_h,omitempty"`
-		Tim           int    `json:"tim,omitempty"`
-		Time          int    `json:"time"`
-		Md5           string `json:"md5,omitempty"`
-		Fsize         int    `json:"fsize,omitempty"`
-		Resto         int    `json:"resto"`
-		Bumplimit     int    `json:"bumplimit,omitempty"`
-		Imagelimit    int    `json:"imagelimit,omitempty"`
-		SemanticURL   string `json:"semantic_url,omitempty"`
-		CustomSpoiler int    `json:"custom_spoiler,omitempty"`
-		Replies       int    `json:"replies,omitempty"`
-		Images        int    `json:"images,omitempty"`
-		UniqueIps     int    `json:"unique_ips,omitempty"`
-		Spoiler       int    `json:"spoiler,omitempty"`
+		No  int `json:"no"`
+		Tim int `json:"tim,omitempty"`
 	} `json:"posts"`
 }
 
 func main() {
+	var bjson = "https://a.4cdn.org/" + board + "/threads.json"
 	r, err := http.Get(bjson)
 	if err != nil {
 		fmt.Println(err)
