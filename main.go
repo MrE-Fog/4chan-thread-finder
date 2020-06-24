@@ -40,12 +40,12 @@ func main() {
 	}
 	defer r.Body.Close()
 
-	var fchan Fourchan
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println(err)
 	}
 
+	var fchan Fourchan
 	err = json.Unmarshal(body, &fchan)
 
 	for _, c := range fchan {
@@ -66,12 +66,12 @@ func scant(thread int) {
 	}
 	defer r.Body.Close()
 
-	var fthread Fourthread
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println(err)
 	}
 
+	var fthread Fourthread
 	err = json.Unmarshal(body, &fthread)
 
 	for _, t := range fthread.Posts {

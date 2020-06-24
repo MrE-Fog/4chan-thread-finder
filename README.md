@@ -5,7 +5,7 @@ Multi platform thread searcher.
 Build
 ====
 
-`go build .`
+`go build -ldflags="-s -w" .`
 
 Usage
 ====
