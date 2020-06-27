@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -53,6 +54,8 @@ func main() {
 			scant(t.No)
 		}
 	}
+	fmt.Println("No hit. Scanning the archive now.")
+	archive()
 }
 
 func scant(thread int) {
@@ -82,4 +85,36 @@ func scant(thread int) {
 			os.Exit(0)
 		}
 	}
+}
+
+func archive() {
+	arch := "https://a.4cdn.org/" + board + "/archive.json"
+
+	r, err := http.Get(arch)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer r.Body.Close()
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+	data := buf.String()
+	arct := strings.Split(data, ",")
+	blen := len(arct)
+
+	for i := 0; i < blen; i++ {
+		if i == 0 {
+			rem := strings.Replace(arct[0], "[", "", 1)
+			trd, _ := strconv.Atoi(rem)
+			scant(trd)
+		} else if i == blen-1 {
+			rem := strings.Replace(arct[blen-1], "]", "", 1)
+			trd, _ := strconv.Atoi(rem)
+			scant(trd)
+		} else {
+			trd, _ := strconv.Atoi(arct[i])
+			scant(trd)
+		}
+	}
+
 }
