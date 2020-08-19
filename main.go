@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cheggaaa/pb"
 )
 
 var query = strings.Join(os.Args[1:], " ")
@@ -35,6 +37,8 @@ type Fourthread struct {
 
 func main() {
 	var bjson = "https://a.4cdn.org/" + board + "/threads.json"
+	bar := pb.StartNew(140)
+
 	r, err := http.Get(bjson)
 	if err != nil {
 		fmt.Println(err)
@@ -52,8 +56,10 @@ func main() {
 	for _, c := range fchan {
 		for _, t := range c.Threads {
 			scant(t.No)
+			bar.Increment()
 		}
 	}
+	bar.Finish()
 	fmt.Println("No hit. Scanning the archive now.")
 	archive()
 }
@@ -81,7 +87,7 @@ func scant(thread int) {
 		tmpname, _ := strconv.Atoi(fname)
 		if t.Tim == tmpname {
 			tmptno := strconv.Itoa(t.No)
-			fmt.Println("https://boards.4chan.org/" + board + "/thread/" + sure + "#" + tmptno)
+			fmt.Println("\nhttps://boards.4chan.org/" + board + "/thread/" + sure + "#" + tmptno)
 			os.Exit(0)
 		}
 	}
@@ -101,6 +107,7 @@ func archive() {
 	data := buf.String()
 	arct := strings.Split(data, ",")
 	blen := len(arct)
+	bar := pb.StartNew(blen)
 
 	for i := 0; i < blen; i++ {
 		if i == 0 {
@@ -115,6 +122,7 @@ func archive() {
 			trd, _ := strconv.Atoi(arct[i])
 			scant(trd)
 		}
+		bar.Increment()
 	}
-
+	bar.Finish()
 }
