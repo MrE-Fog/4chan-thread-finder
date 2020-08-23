@@ -37,7 +37,7 @@ type Fourthread struct {
 
 func main() {
 	var bjson = "https://a.4cdn.org/" + board + "/threads.json"
-	bar := pb.StartNew(140)
+	bar := pb.StartNew(150)
 
 	r, err := http.Get(bjson)
 	if err != nil {
